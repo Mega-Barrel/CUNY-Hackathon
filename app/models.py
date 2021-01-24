@@ -6,11 +6,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 
 
-roles_users = db.Table('roles_users',
-    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-    db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
-)
-
 class_students = db.Table('class_students',
     db.Column('student_id', db.Integer(), db.ForeignKey('user.id')),
     db.Column('classroom_id', db.Integer(), db.ForeignKey('classroom.id'))
