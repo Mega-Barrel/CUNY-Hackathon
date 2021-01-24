@@ -1,16 +1,36 @@
-from flask import render_template, redirect, url_for, flash, request, current_app
+from flask import render_template, redirect, url_for, flash, request, current_app, jsonify
 from flask_login import current_user, login_required
 
 from app import db
 from app.classroom import bp
 from app.classroom.forms import AddClassroomForm
-from app.models import Classroom, Subject
+from app.decorators import role_required
+from app.models import Classroom, User, Subject, Role
 
 
-@bp.route('/classroom', methods=['GET'])
-@bp.route('/classroom/<int:classroom_id>', methods=['GET'])
+@bp.route('/', methods=['GET'])
+@bp.route('/<int:classroom_id>', methods=['GET'])
 @login_required
 def show_classroom(classroom_id=None):
+    # Classroom for students
+    _role = Role.query.filter_by(id=current_user.role_id).first()
+    
+    if _role.name == 'Student':
+        if classroom_id:
+            classroom = Classroom.query.filter_by(id=classroom_id).first()
+            return render_template('classroom/classroom_detail.html', title=f'Classroom - {classroom.name}', classroom=classroom)
+        page = request.args.get('page', 1, type=int)
+        classrooms = Classroom.query.filter_by(creator_id=current_user.id).paginate(
+            page, current_app.config['CARDS_PER_PAGE'], False
+        )
+        next_url = url_for('classroom.show_classroom', page=classrooms.next_num) if classrooms.has_next else None
+        prev_url = url_for('classroom.show_classroom', page=classrooms.prev_num) if classrooms.has_prev else None
+
+        return render_template('classroom/list_classrooms.html', title=f'Classrooms - {current_user.username}',
+                               classrooms=classrooms.items, next_url=next_url,
+                               prev_url=prev_url)
+    # Classroom for Admins
+    # Classroom for teachers
     if classroom_id:
         classroom = Classroom.query.filter_by(id=classroom_id).first()
         return render_template('classroom/classroom_detail.html', title=f'Classroom - {classroom.name}', classroom=classroom)
@@ -28,8 +48,9 @@ def show_classroom(classroom_id=None):
 
 
 
-@bp.route('/add_classroom', methods=['GET', 'POST'])
+@bp.route('/add', methods=['GET', 'POST'])
 @login_required
+@role_required('Teacher')
 def add_classroom():
     # TODO: Permission for Teachers
     form = AddClassroomForm()
@@ -52,8 +73,9 @@ def add_classroom():
     return render_template('classroom/add_classroom.html', title='Add Classroom', form=form)
 
 
-@bp.route('/edit_classroom/<int:classroom_id>', methods=['GET', 'POST'])
+@bp.route('/edit/<int:classroom_id>', methods=['GET', 'POST'])
 @login_required
+@role_required('Teacher')
 def edit_classroom(classroom_id):
     classroom = Classroom.query.filter_by(id=classroom_id).first_or_404()
     form = AddClassroomForm()
@@ -81,3 +103,39 @@ def edit_classroom(classroom_id):
     return render_template('classroom/edit_classroom.html', title='Edit Classroom',
                            form=form)
 
+
+@bp.route('/add_student/<int:classroom_id>/<int:student_id>', methods=['POST', 'DELETE'])
+@login_required
+@role_required('Teacher')
+def add_student_to_classroom(classroom_id, student_id):
+    classroom = Classroom.query.filter_by(id=classroom_id).first_or_404()
+    user = User.query.filter_by(id=student_id).first_or_404()
+
+    if request.method == 'POST':
+        classroom.add_student(user)
+        db.session.commit()
+    # Delete logic
+    classroom.remove_student(user)
+    db.session.commit()
+    return jsonify({
+        'status': 'success'
+    }), 200
+
+
+# @bp.route('/add_student/<int:classroom_id>/<int:student_id>/<int:coursework_id>', methods=['POST'])
+# @bp.route('/add_student/<int:classroom_id>/<int:student_id>/<int:coursework_id>', methods=['DELETE'])
+# @login_required
+# @role_required('Teacher')
+# def add_student_to_classroom(classroom_id, student_id, coursework_id):
+#     classroom = Classroom.query.filter_by(id=classroom_id).first_or_404()
+#     user = User.query.filter_by(id=student_id).first_or_404()
+
+#     if request.method == 'POST':
+#         classroom.add_student(user)
+#         db.session.commit()
+#     # Delete logic
+#     classroom.remove_student(user)
+#     db.session.commit()
+#     return jsonify({
+#         'status': 'success'
+#     }), 200

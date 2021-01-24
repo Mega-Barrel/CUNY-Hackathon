@@ -25,7 +25,6 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
-
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -58,13 +57,14 @@ class Permissions:
     WRITE_COMMENTS = 4
     LIST_DB_DATA = 8
 
+
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), unique = True)
     default = db.Column(db.Boolean, default = False, index = True)
     permissions = db.Column(db.Integer)
-    users = db.relationship('User', backref = 'role')
+    users = db.relationship('User', backref = 'roles')
     
     def __init__(self, **kwargs):
         super(Role, self).__init__(**kwargs)
@@ -120,7 +120,7 @@ class Classroom(db.Model):
     time = db.Column(db.String(10))
     active = db.Column(db.Boolean())
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    students = db.relationship('User', secondary=class_students,
+    students = db.relationship('User', secondary=class_students, lazy='dynamic',
                                backref=db.backref('classroom', lazy='dynamic'))
 
     def __init__(self, name, description, subject, term, year, time, active, creator_id):
@@ -132,7 +132,17 @@ class Classroom(db.Model):
         self.time = time
         self.active = active
         self.creator_id = creator_id
+    
+    def add_student(self, user):
+        if not self.is_student(user):
+            self.students.append(user)
+    
+    def remove_student(self, user):
+        if self.is_student(user):
+            self.students.remove(user)
 
+    def is_student(self, user):
+        return len([student for student in self.students.all() if student.id == user.id]) > 0
 
 
 class CourseworkInstance(db.Model):

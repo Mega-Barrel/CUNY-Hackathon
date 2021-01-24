@@ -2,9 +2,32 @@
 
 {% block app_content %}
 
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Classes</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <a href="{{url_for('classroom.add_classroom')}}"><button class="btn btn-sm btn-outline-secondary">Add Class</button></a>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Subject
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-deck">
 {% for classroom in classrooms %}
 {% include 'classroom/_classroom.html' %}
 {% endfor %}
+</div>
 
 <nav aria-label="...">
     <ul class="pager">

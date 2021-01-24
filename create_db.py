@@ -11,5 +11,6 @@ def create_metadata_tables():
 _app = create_app(Config)
 app_context = _app.app_context()
 app_context.push()
+db.drop_all()
 db.create_all()
 create_metadata_tables()

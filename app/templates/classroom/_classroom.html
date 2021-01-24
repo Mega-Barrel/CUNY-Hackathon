@@ -1,1 +1,16 @@
-<div>{{classroom.id}}</div>
+
+    <div class="card">
+        <img class="card-img-top" src="{{url_for('static', filename='Images/maths.jpg')}}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{classroom.term}} - {{classroom.name}} - {{classroom.time}}</h5>
+            <p class="card-text">{{classroom.description}}</p>
+        </div>
+        <div class="card-footer">
+            <a href="{{url_for('classroom.show_classroom', classroom_id=classroom.id)}}">
+                <small class="text-muted">Classroom Details</small>
+            </a>
+            <a href="{{url_for('classroom.edit_classroom', classroom_id=classroom.id)}}">
+                <small class="text-muted">Edit Classroom</small>
+            </a>
+        </div>
+    </div>
