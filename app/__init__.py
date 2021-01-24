@@ -29,13 +29,16 @@ def create_app(config_class=Config):
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
     
+
     from app.classroom import bp as classroom_bp
     app.register_blueprint(classroom_bp, url_prefix='/classroom')
+
+    from app.student import bp as student_bp
+    app.register_blueprint(student_bp, url_prefix='/student')
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
     return app
-
 
 from app import models
