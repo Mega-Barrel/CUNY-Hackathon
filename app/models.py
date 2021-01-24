@@ -122,6 +122,7 @@ class Classroom(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     students = db.relationship('User', secondary=class_students,
                                backref=db.backref('classroom', lazy='dynamic'))
+    courses = db.relationship('Coursework', backref = 'classroom')
 
     def __init__(self, name, description, subject, term, year, time, active, creator_id):
         self.name = name
@@ -162,20 +163,11 @@ class CourseworkInstance(db.Model):
 
 class Coursework(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    score_type = db.Column(db.String(120))
-    max_value = db.Column(db.Float)
-    min_value = db.Column(db.Float)
-    graded_item_type = db.Column(db.String(120))
+    name = db.Column(db.String(64), nullable=False)
     classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'), nullable=False)
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    items = db.relationship('CourseworkInstance', backref = 'coursework')
 
-    def __init__(self, id, score_type, max_value, min_value, graded_item_type, class_id, creator_id):
-        self.score_type = score_type
-        self.max_value = max_value
-        self.min_value = min_value
-        self.graded_item_type = graded_item_type
-        self.classroom_id = classroom_id
-        self.creator_id = creator_id
 
 
 class CourseworkType(db.Model):

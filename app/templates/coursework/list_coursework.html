@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/coursework/add">Add Coursework</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+<div class="list-group">
+    {% for course in coursework %}
+    {% set url = coursework_urls[loop.index0] %}
+    {% include 'coursework/_coursework.html' %}
+    {% endfor %}
+</div>
+
+<nav aria-label="...">
+    <ul class="pager">
+        <li class="previous{% if not prev_url %} disabled{% endif %}">
+            <a href="{{ prev_url or '#' }}">
+                <span aria-hidden="true">&larr;</span> Next
+            </a>
+        </li>
+        <li class="next{% if not next_url %} disabled{% endif %}">
+            <a href="{{ next_url or '#' }}"> Prev <span aria-hidden="true">&rarr;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
