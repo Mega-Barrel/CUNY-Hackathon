@@ -7,13 +7,13 @@ from app import db, login
 
 
 class_students = db.Table('class_students',
-    db.Column('student_id', db.Integer(), db.ForeignKey('user.id')),
+    db.Column('student_id', db.Integer(), db.ForeignKey('users.id')),
     db.Column('classroom_id', db.Integer(), db.ForeignKey('classroom.id'))
 )
 
 student_parents = db.Table('student_parents',
-    db.Column('student_id', db.Integer(), db.ForeignKey('user.id')),
-    db.Column('parent_id', db.Integer(), db.ForeignKey('user.id'))
+    db.Column('student_id', db.Integer(), db.ForeignKey('users.id')),
+    db.Column('parent_id', db.Integer(), db.ForeignKey('users.id'))
 )
 
 
@@ -119,7 +119,7 @@ class Classroom(db.Model):
     year = db.Column(db.Integer())
     time = db.Column(db.String(10))
     active = db.Column(db.Boolean())
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     students = db.relationship('User', secondary=class_students,
                                backref=db.backref('classroom', lazy='dynamic'))
 
@@ -144,8 +144,8 @@ class CourseworkInstance(db.Model):
     graded = db.Column(db.Boolean)
     comments = db.Column(db.String(120))
     classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'), nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     coursework_id = db.Column(db.Integer, db.ForeignKey('coursework.id'), nullable=False)
 
     def __init__(self, value, date_occurred, updated_at, created_at, graded, comments, classroom_id, student_id, creator_id, coursework_id):
@@ -167,7 +167,7 @@ class Coursework(db.Model):
     min_value = db.Column(db.Float)
     graded_item_type = db.Column(db.String(120))
     classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'), nullable=False)
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __init__(self, id, score_type, max_value, min_value, graded_item_type, class_id, creator_id):
         self.score_type = score_type
@@ -186,7 +186,7 @@ class CourseworkType(db.Model):
     updated_at = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime)
     classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'), nullable=False)
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     
     def __init__(self, name, category, item_type, updated_at, created_at, classroom_id, creator_id):
         self.name = name
