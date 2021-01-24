@@ -17,6 +17,72 @@
 
   <!-- Custom styles for this template -->
   <link href="/static/dashboard.css" rel="stylesheet">
+  <link href="https://canvasjs.com/assets/css/jquery-ui.1.11.2.min.css" rel="stylesheet" />
+  <script>
+    window.onload = function () {
+
+      // Construct options first and then pass it as a parameter
+      var options1 = {
+        animationEnabled: true,
+        title: {
+          text: "Student Data"
+        },
+        data: [{
+          type: "column", //change it to line, area, bar, pie, etc
+          showInLegend: true,
+          dataPoints: [{
+              label: "January",
+              y: 78
+            },
+            {
+              label: "Feburary",
+              y: 66
+            },
+            {
+              label: "March",
+              y: 64
+            },
+            {
+              label: "April",
+              y: 44
+            },
+            {
+              label: "May",
+              y: 30
+            },
+            {
+              label: "June",
+              y: 89
+            },
+            {
+              label: "July",
+              y: 88 
+            },
+            {
+              label: "August",
+              y: 89
+            },
+            {
+              label: "September",
+              y: 19
+            }
+          ]
+        }]
+      };
+
+      $("#resizable").resizable({
+        create: function (event, ui) {
+          //Create chart.
+          $("#chartContainer1").CanvasJSChart(options1);
+        },
+        resize: function (event, ui) {
+          //Update chart size according to its container size.
+          $("#chartContainer1").CanvasJSChart().render();
+        }
+      });
+
+    }
+  </script>
 </head>
 
 <body>
@@ -71,6 +137,7 @@
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
         <!-- Main Content Starts Here-->
+
 
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
           <h1 class="h2">Students</h1>
@@ -148,6 +215,9 @@
           </div>
         </div>
 
+        <div id="resizable" style="height: 370px;border:1px solid gray;">
+          <div id="chartContainer1" style="height: 100%; width: 100%;"></div>
+        </div>
 
       </main>
 
@@ -157,6 +227,15 @@
   <!-- Bootstrap core JavaScript
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
+
+  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+  <script src="https://canvasjs.com/assets/script/jquery-ui.1.11.2.min.js"></script>
+  <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+  <!-- 
+  <script src="/assets/vendor/chart.js/dist/Chart.min.js"></script>
+  <script src="/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+
+
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
   </script>
@@ -164,7 +243,7 @@
     window.jQuery || document.write(
       '<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')
   </script>
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script> -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
   </script>
 
