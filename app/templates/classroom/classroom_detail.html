@@ -42,7 +42,7 @@
                         <td>{{student.id}}</td>
                         <td>{{student.username}}</td>
                         <td>90</td>
-                        <td><a href="{{url_for('classroom.add_grade')}}">Add Grade</a></td>
+                        <td><a href="{{url_for('classroom.add_grade', student_id=student.id, classroom_id=classroom.id)}}">Add Grade</a></td>
                         <td><a data-key="{{student.id}}" class="remove_student" href="{{url_for('classroom.remove_student_from_classroom', classroom_id=classroom.id, student_id=student.id)}}">Remove Student</a></td>
                     </tr>
                     {% endfor %}
@@ -50,10 +50,65 @@
             </table>
         </div>
     </div>
+</div>
 
 
 <!-- Must Show Gradebook -->
-
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h1 class="h3">Gradebook</h1>
+            <table class="table table-bordered table-hover" id="tab_logic">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            Coursework Item #
+                        </th>
+                        <th class="text-center">
+                            Coursework Name
+                        </th>
+                        <th class="text-center">
+                            Student Name
+                        </th>
+                        <th class="text-center">
+                            Date Taken
+                        </th>
+                        <th class="text-center">
+                            Updated At
+                        </th>
+                        <th class="text-center">
+                            Grade
+                        </th>
+                        <th class="text-center">
+                            Edit Coursework Item
+                        </th>
+                        <th class="text-center">
+                            Delete Coursework Item
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for coursework_name, coursework_item, student_name in course_items %}
+                    <tr id="{{coursework_item.id}}">
+                        <td>{{ coursework_item.id }}</td>
+                        <td>{{ coursework_name }}</td>
+                        <td>{{ student_name }}</td>
+                        <td>{{ coursework_item.value }}</td>
+                        <td>{{ moment(coursework_item.date_occurred).calendar() }}</td>
+                        <td>{{ moment(coursework_item.updated_at).calendar() }}</td>
+                        <td><a
+                                href="{{url_for('classroom.edit_grade', coursework_item_id=coursework_item.id)}}">Edit
+                                Grade</a></td>
+                        <td><a data-key="{{coursework_item.id}}" class="delete_student"
+                                href="{{url_for('classroom.delete_grade', coursework_item_id=coursework_item.id)}}">Remove
+                                Grade</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
