@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField, IntegerField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField, IntegerField, DateField
 from wtforms.validators import ValidationError, DataRequired, Length, NumberRange
 
 
@@ -13,3 +13,18 @@ class AddClassroomForm(FlaskForm):
     active = BooleanField('Active')
 
     submit = SubmitField('Submit')
+
+
+class AddStudentForm(FlaskForm):
+    student = SelectField('Student Name', validators=[DataRequired()])
+    submit = SubmitField('Add')
+
+
+class AddStudentGradeForm(FlaskForm):
+    grade = IntegerField('Grade', [DataRequired(), NumberRange(min=0, max=100)])
+    date_occurred = DateField('Date Taken', format='%m/%d/%y')
+    graded = BooleanField('Graded Item')
+    comments = TextAreaField('Comments', validators=[Length(min=0, max=140)])
+    coursework_item = SelectField('Coursework Item', validators=[DataRequired()])
+
+    submit = SubmitField('Add Grade')

@@ -1,3 +1,122 @@
-<div>{{classroom.id}}</div>
-<!-- Must Have Roster Gradebook -->
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ classroom.name }}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <a href="{{url_for('classroom.add_student_to_classroom', classroom_id=classroom.id)}}"><button
+                    class="btn btn-sm btn-outline-secondary">Add Student</button></a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h1 class="h3">Roster</h1>
+            <table class="table table-bordered table-hover" id="tab_logic">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            #
+                        </th>
+                        <th class="text-center">
+                            Name
+                        </th>
+                        <th class="text-center">
+                            Current Grade
+                        </th>
+                        <th class="text-center">
+                            Add Grade
+                        </th>
+                        <th class="text-center">
+                            Remove Student
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in classroom.students %}
+                    <tr id="{{student.id}}">
+                        <td>{{student.id}}</td>
+                        <td>{{student.username}}</td>
+                        <td>90</td>
+                        <td><a href="{{url_for('classroom.add_grade', student_id=student.id, classroom_id=classroom.id)}}">Add Grade</a></td>
+                        <td><a data-key="{{student.id}}" class="remove_student" href="{{url_for('classroom.remove_student_from_classroom', classroom_id=classroom.id, student_id=student.id)}}">Remove Student</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 <!-- Must Show Gradebook -->
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h1 class="h3">Gradebook</h1>
+            <table class="table table-bordered table-hover" id="tab_logic">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            Coursework Item #
+                        </th>
+                        <th class="text-center">
+                            Coursework Name
+                        </th>
+                        <th class="text-center">
+                            Student Name
+                        </th>
+                        <th class="text-center">
+                            Date Taken
+                        </th>
+                        <th class="text-center">
+                            Updated At
+                        </th>
+                        <th class="text-center">
+                            Grade
+                        </th>
+                        <th class="text-center">
+                            Edit Coursework Item
+                        </th>
+                        <th class="text-center">
+                            Delete Coursework Item
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for coursework_name, coursework_item, student_name in course_items %}
+                    <tr id="{{coursework_item.id}}">
+                        <td>{{ coursework_item.id }}</td>
+                        <td>{{ coursework_name }}</td>
+                        <td>{{ student_name }}</td>
+                        <td>{{ coursework_item.value }}</td>
+                        <td>{{ moment(coursework_item.date_occurred).calendar() }}</td>
+                        <td>{{ moment(coursework_item.updated_at).calendar() }}</td>
+                        <td><a
+                                href="{{url_for('classroom.edit_grade', coursework_item_id=coursework_item.id)}}">Edit
+                                Grade</a></td>
+                        <td><a data-key="{{coursework_item.id}}" class="delete_student"
+                                href="{{url_for('classroom.delete_grade', coursework_item_id=coursework_item.id)}}">Remove
+                                Grade</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+$(document).ready(function () {
+    $(".remove_student").click(function (e) {
+        e.preventDefault()
+    }
+});
+{% endblock %}
