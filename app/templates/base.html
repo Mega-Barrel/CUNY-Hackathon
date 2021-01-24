@@ -63,9 +63,9 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">
+                        <a class="nav-link active" href="{{url_for('main.index')}}">
                             <span data-feather="home"></span>
-                            Dashboard <span class="sr-only">(current)</span>
+                            Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
@@ -75,7 +75,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/coursework/coursework">
+                        <a class="nav-link" href="{{url_for('coursework.show_coursework')}}">
                             <span data-feather="book"></span>
                             Coursework
                         </a>
