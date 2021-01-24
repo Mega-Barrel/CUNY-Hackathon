@@ -123,6 +123,16 @@ class Classroom(db.Model):
     students = db.relationship('User', secondary=class_students, lazy='dynamic',
                                backref=db.backref('classroom', lazy='dynamic'))
     courses = db.relationship('Coursework', backref = 'classroom')
+
+    def __init__(self, name, description, subject, term, year, time, active, creator_id):
+        self.name = name
+        self.description = description
+        self.subject = subject
+        self.term = term
+        self.year = year
+        self.time = time
+        self.active = active
+        self.creator_id = creator_id
     
     def add_student(self, user):
         if not self.is_student(user):
@@ -148,6 +158,18 @@ class CourseworkInstance(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     coursework_id = db.Column(db.Integer, db.ForeignKey('coursework.id'), nullable=False)
+
+    def __init__(self, value, date_occurred, updated_at, created_at, graded, comments, classroom_id, student_id, creator_id, coursework_id):
+        self.value = value
+        self.date_occurred = date_occurred
+        self.updated_at = updated_at
+        self.created_at = created_at
+        self.graded = graded
+        self.comments = comments
+        self.classroom_id = classroom_id
+        self.student_id = student_id
+        self.creator_id = creator_id
+        self.coursework_id = coursework_id
 
 
 class Coursework(db.Model):

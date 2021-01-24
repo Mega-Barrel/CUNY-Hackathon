@@ -93,9 +93,9 @@
                         <td>{{ coursework_item.id }}</td>
                         <td>{{ coursework_name }}</td>
                         <td>{{ student_name }}</td>
-                        <td>{{ coursework_item.value }}</td>
                         <td>{{ moment(coursework_item.date_occurred).calendar() }}</td>
                         <td>{{ moment(coursework_item.updated_at).calendar() }}</td>
+                        <td>{{ coursework_item.value }}</td>
                         <td><a
                                 href="{{url_for('classroom.edit_grade', coursework_item_id=coursework_item.id)}}">Edit
                                 Grade</a></td>
