@@ -13,3 +13,9 @@ class AddClassroomForm(FlaskForm):
     active = BooleanField('Active')
 
     submit = SubmitField('Submit')
+
+
+class AddStudentForm(FlaskForm):
+    student = SelectField('Student Name', validators=[DataRequired()])
+
+    submit = SubmitField('Add')

@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 
 from app import db
 from app.classroom import bp
-from app.classroom.forms import AddClassroomForm
+from app.classroom.forms import AddClassroomForm, AddStudentForm
 from app.decorators import role_required
 from app.models import Classroom, User, Subject, Role
 
@@ -104,22 +104,46 @@ def edit_classroom(classroom_id):
                            form=form)
 
 
-@bp.route('/add_student/<int:classroom_id>/<int:student_id>', methods=['POST', 'DELETE'])
+@bp.route('/add_classroom/<int:classroom_id>', methods=['GET', 'POST'])
 @login_required
 @role_required('Teacher')
-def add_student_to_classroom(classroom_id, student_id):
+def add_student_to_classroom(classroom_id):
+    form = AddStudentForm()
+    classroom = Classroom.query.filter_by(id=classroom_id).first_or_404()
+    in_class_students = [student.id for student in classroom.students.all()]
+    results = db.session.query(User).filter(User.role_id==1).filter(User.id.notin_(in_class_students)).all()
+    form.student.choices = [(student.id, student.username) for student in results]
+    # form.student.choices = [(student.id, student.username) for student in User.query.filter_by(role_id=1).filter(id.notin_(in_class_students)).order_by('name')]
+    if request.method == 'POST':
+        student_name = form.student.data
+        student = User.query.filter_by(id=int(student_name)).first_or_404()
+        classroom.add_student(student)
+        
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('classroom.show_classroom', classroom_id=classroom.id))
+    return render_template('classroom/add_student_to_classroom.html', title='Add Student to Classroom',
+                           form=form)
+
+
+@bp.route('/remove_student_classroom/<int:classroom_id>/<int:student_id>', methods=['DELETE'])
+@login_required
+@role_required('Teacher')
+def remove_student_from_classroom(classroom_id, student_id):
     classroom = Classroom.query.filter_by(id=classroom_id).first_or_404()
     user = User.query.filter_by(id=student_id).first_or_404()
-
-    if request.method == 'POST':
-        classroom.add_student(user)
-        db.session.commit()
     # Delete logic
     classroom.remove_student(user)
     db.session.commit()
     return jsonify({
         'status': 'success'
     }), 200
+
+@bp.route('/add_grade/', methods=['GET', 'POST'])
+@login_required
+@role_required('Teacher')
+def add_grade():
+    pass
 
 
 # @bp.route('/add_student/<int:classroom_id>/<int:student_id>/<int:coursework_id>', methods=['POST'])

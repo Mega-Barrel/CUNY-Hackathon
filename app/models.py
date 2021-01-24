@@ -46,8 +46,8 @@ class User(UserMixin, db.Model):
         
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
-        if self.role is None:
-            self.role = Role.query.filter_by(default = True).first()
+        if self.role_id is None:
+            self.role_id = Role.query.filter_by(default = True).first().id
         
         
 class Permissions:
