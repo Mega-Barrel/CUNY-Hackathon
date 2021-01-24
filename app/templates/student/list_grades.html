@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/student/details">Details</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/student/grades">Grades</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Coursework</th>
+        <th scope="col">Class</th>
+        <th scope="col">Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for course in coursework_items %}
+        {% include 'student/_student.html' %}
+        {% endfor %}
+    </tbody>
+  </table>
+
+<nav aria-label="...">
+    <ul class="pager">
+        <li class="previous{% if not prev_url %} disabled{% endif %}">
+            <a href="{{ prev_url or '#' }}">
+                <span aria-hidden="true">&larr;</span> Next
+            </a>
+        </li>
+        <li class="next{% if not next_url %} disabled{% endif %}">
+            <a href="{{ next_url or '#' }}"> Prev <span aria-hidden="true">&rarr;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
