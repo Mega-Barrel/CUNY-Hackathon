@@ -14,12 +14,21 @@
   </nav>
 
 
-<div class="list-group">
-    {% for course in coursework %}
-    {% set url = coursework_urls[loop.index0] %}
-    {% include 'coursework/_coursework.html' %}
-    {% endfor %}
-</div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Coursework</th>
+        <th scope="col">Class</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for course in coursework %}
+        {% set url = coursework_urls[loop.index0] %}
+        {% include 'coursework/_coursework.html' %}
+        {% endfor %}
+    </tbody>
+  </table>
 
 <nav aria-label="...">
     <ul class="pager">
