@@ -14,7 +14,6 @@ app_context.push()
 db.drop_all()
 db.create_all()
 create_metadata_tables()
-<<<<<<< HEAD
 
 teacher_role = Role.query.filter_by(name = 'Teacher').first()
 teacher = User(username='teacher', email='teacher@gmail.com', role=teacher_role)
@@ -44,5 +43,3 @@ coursework_instance = CourseworkInstance(value=90.0, classroom_id=1, student_id=
 db.session.add(coursework_instance)
 
 db.session.commit()
-=======
->>>>>>> gradebook_route
