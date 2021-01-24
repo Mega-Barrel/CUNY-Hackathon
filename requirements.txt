@@ -1,7 +1,0 @@
-wtforms[email]
-flask
-flask-sqlalchemy
-flask-login
-flask-bootstrap
-flask-moment
-flask-wtf

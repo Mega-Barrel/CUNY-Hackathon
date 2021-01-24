@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Hello, Mr. Kimmel</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/dashboard/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Hello, Mr. X</a>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="#">Sign In</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/templates/dashboard.html">
+                                <span data-feather="home"></span>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/templates/Classes.html">
+                                <span data-feather="file"></span>
+                                Classes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/templates/Course_Work.html">
+                                <span data-feather="shopping-cart"></span>
+                                Coursework <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/templates/Student_Page.html">
+                                <span data-feather="users"></span>
+                                Students
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/templates/Action_Plan/Action_plan.html">
+                                <span data-feather="layers"></span>
+                                Action Plans
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md- ml-sm-auto col-lg-10 pt-3 px-4">
+                <!-- Main Content Starts Here-->
+
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Add Student Grades</h1>
+                </div>
+
+                <div class="container">
+                    <div class="row clearfix">
+                        <div class="col-md-12 column">
+                            <table class="table table-bordered table-hover" id="tab_logic">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            Name
+                                        </th>
+                                        <th class="text-center">
+                                            Assignment
+                                        </th>
+                                        <th class="text-center">
+                                            Quiz
+                                        </th>
+                                        <th class="text-center">
+                                            Final Exams
+                                        </th>
+                                        <th class="text-center">
+                                            Subject
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="addr0">
+                                        <td>
+                                            <input type="text" name="Name" placeholder="Name" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input type="text" name="assignment" placeholder="assignment"
+                                                class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input type="text" name="Quiz" placeholder="Quiz" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input type="text" name="Final_Exam" placeholder="Final_Exam"
+                                                class="form-control" />
+                                        </td>
+                                        <td>
+                                            <select type="text" placeholder="Final_Exam" class="form-control"
+                                                name="Subject" id="cars">
+                                                <option value="math">Math</option>
+                                                <option value="english">English</option>
+                                                <option value="soft-skills">Soft-Skills</option>
+                                                <option value="biology">Biology</option>
+                                                <option value="history">History</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <a id="add_row" class="btn btn-default pull-left">Add Row</a><a id="delete_row"
+                        class="pull-right btn btn-default">Delete Row</a>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+
+    <script>
+        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')
+    </script>
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+
+
+
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var grade_row_open = `<td>
+                    <input type='text' name='Name' placeholder='Name' class='form-control' />
+                </td>
+                <td>
+                    <input type='text' name='assignment' placeholder='assignment'class='form-control' />
+                </td>
+                <td>
+                    <input type='text' name='Quiz' placeholder='Quiz' class='form-control' />
+                </td>
+                <td>
+                    <input type='text' name='Final_Exam' placeholder='Final_Exam'
+                        class='form-control' />
+                </td>
+                <td>
+                    <select type='text' placeholder='Final_Exam' class='form-control'
+                        name='Subject' id='cars'>
+                        <option value='math'>Math</option>
+                        <option value='english'>English</option>
+                        <option value='soft-skills'>Soft-Skills</option>
+                        <option value='biology'>Biology</option>
+                        <option value='history'>History</option>
+                    </select>
+                </td>
+            </tr>`
+            var i = 1;
+            $("#add_row").click(function () {
+                var new_row = $(`<tr id='addr` + i + `'></tr>`).html(grade_row_open);
+
+                $('#tab_logic').append(new_row);
+                i++;
+            });
+            $("#delete_row").click(function () {
+                var _len = $('#tab_logic tbody').children().length
+                $('#tab_logic tbody').children()[_len - 1].remove()
+            });
+
+        });
+    </script>
+
+
+</body>
+
+</html>

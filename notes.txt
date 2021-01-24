@@ -1,0 +1,23 @@
+#TODO
+
+# Dashboard Page
+1. Dashboard -> connect it to student database
+2. More Viz.
+
+
+# Classes Page
+1. Classroom details
+2. Add form data -> and show data -> IndividualCards
+3. Class Details -> show class info -> edit button
+
+
+# Students Page
+1. Student Form -> edit/save button -> below -> Grades Viz.
+
+
+# Coursework Page
+1. Add student marks for Assignment/Quiz/Final-Exams
+
+
+# Action Plan page
+1. Display individual cards with preloaded material/link to Videos
