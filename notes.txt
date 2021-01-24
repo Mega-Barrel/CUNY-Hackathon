@@ -8,7 +8,7 @@
 # Classes Page
 1. Classroom details
 2. Add form data -> and show data -> IndividualCards
-3. Class Details -> show class info -> edit button
+3. Class Details -> show class info -> edit button -> Name(student with Table) -> Coursename -> total_students ->  
 
 
 # Students Page

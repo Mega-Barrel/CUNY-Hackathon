@@ -21,7 +21,7 @@
 
 <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">He</a>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
                 <a class="nav-link" href="#">Sign In</a>
@@ -74,7 +74,7 @@
 
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Add Student Grades</h1>
+                    <h1 class="h2">Students</h1>
                 </div>
 
 
@@ -85,47 +85,27 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">
-                                            Name
+                                            ID #
                                         </th>
                                         <th class="text-center">
-                                            Assignment
+                                            First Name
                                         </th>
                                         <th class="text-center">
-                                            Quiz
-                                        </th>
-                                        <th class="text-center">
-                                            Final Exams
-                                        </th>
-                                        <th class="text-center">
-                                            Subject
+                                            Last Name
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr id="addr0">
                                         <td>
-                                            <input type="text" name="Name" placeholder="Name" class="form-control" />
+                                            <input type="text" name="Name" placeholder="Id" class="form-control" />
                                         </td>
                                         <td>
-                                            <input type="text" name="assignment" placeholder="assignment"
+                                            <input type="text" name="Name" placeholder="First Name"
                                                 class="form-control" />
                                         </td>
                                         <td>
-                                            <input type="text" name="Quiz" placeholder="Quiz" class="form-control" />
-                                        </td>
-                                        <td>
-                                            <input type="text" name="Final_Exam" placeholder="Final_Exam"
-                                                class="form-control" />
-                                        </td>
-                                        <td>
-                                            <select type="text" placeholder="Final_Exam" class="form-control"
-                                                name="Subject" id="cars">
-                                                <option value="math">Math</option>
-                                                <option value="english">English</option>
-                                                <option value="soft-skills">Soft-Skills</option>
-                                                <option value="biology">Biology</option>
-                                                <option value="history">History</option>
-                                            </select>
+                                            <input type="text" name="Name" placeholder="Last Name" class="form-control" />
                                         </td>
                                     </tr>
                                     <tr id="addr1"></tr>
@@ -175,11 +155,8 @@
                     "' type='text' placeholder='Name' class='form-control input-md'  /> </td> <td><input  name='assignment" +
                     i +
                     "' type='text' placeholder='Assignment'  class='form-control input-md'></td> <td><input  name='Quiz" +
-                    i +
-                    "' type='text' placeholder='Quiz'  class='form-control input-md'></td> <td><input  name='Final_Exam" +
-                    i +
-                    "' type='text' placeholder='Final_Exam'  class='form-control input-md'></td> <td><input  name='Subject" +
-                    i + "' type='text' placeholder='Subject'  class='form-control input-md'></td>");
+                    "' type='text' placeholder='Assignment'  class='form-control input-md'></td> <td><input  name='Quiz"
+                    );
 
                 $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
                 i++;
