@@ -14,9 +14,3 @@ app_context.push()
 db.drop_all()
 db.create_all()
 create_metadata_tables()
-
-
-
-classroom = Classroom(name='Math 5th Grade', subject='Maths', creator_id=1)
-db.session.add(classroom)
-db.session.commit()

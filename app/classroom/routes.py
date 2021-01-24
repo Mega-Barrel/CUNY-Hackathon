@@ -1,11 +1,12 @@
+from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request, current_app, jsonify
 from flask_login import current_user, login_required
 
 from app import db
 from app.classroom import bp
-from app.classroom.forms import AddClassroomForm, AddStudentForm
+from app.classroom.forms import AddClassroomForm, AddStudentForm, AddStudentGradeForm
 from app.decorators import role_required
-from app.models import Classroom, User, Subject, Role
+from app.models import Classroom, User, Subject, Role, Coursework, CourseworkInstance
 
 
 @bp.route('/', methods=['GET'])
@@ -33,7 +34,10 @@ def show_classroom(classroom_id=None):
     # Classroom for teachers
     if classroom_id:
         classroom = Classroom.query.filter_by(id=classroom_id).first()
-        return render_template('classroom/classroom_detail.html', title=f'Classroom - {classroom.name}', classroom=classroom)
+        course_items = Coursework.query.filter_by(classroom_id=classroom.id).filter_by(creator_id=classroom.creator_id).all()
+        course_items = [item for course_item in course_items for item in course_item.items]
+        course_items = [(Coursework.query.filter_by(id=item.coursework_id).first().name, item, User.query.filter_by(id=item.student_id).first().username) for item in course_items]
+        return render_template('classroom/classroom_detail.html', title=f'Classroom - {classroom.name}', classroom=classroom, course_items=course_items)
 
     page = request.args.get('page', 1, type=int)
     classrooms = Classroom.query.filter_by(creator_id=current_user.id).paginate(
@@ -139,11 +143,58 @@ def remove_student_from_classroom(classroom_id, student_id):
         'status': 'success'
     }), 200
 
-@bp.route('/add_grade/', methods=['GET', 'POST'])
+@bp.route('/add_grade/<int:classroom_id>/<int:student_id>', methods=['GET', 'POST'])
 @login_required
 @role_required('Teacher')
-def add_grade():
-    pass
+def add_grade(classroom_id, student_id):
+    form = AddStudentGradeForm()
+    classroom = Classroom.query.filter_by(id=classroom_id).first_or_404()
+    form.coursework_item.choices = [(course_item.id, course_item.name) for course_item in Coursework.query.filter_by(classroom_id=classroom_id).filter_by(creator_id=classroom.creator_id).all()]
+    if form.validate_on_submit():
+        cousework_obj = CourseworkInstance(form.grade.data, form.date_occurred.data, datetime.now(), datetime.now(),
+                                           form.graded.data, form.comments.data, classroom_id, student_id, current_user.id,
+                                           form.coursework_item.data)
+        db.session.add(cousework_obj)
+        db.session.commit()
+        return redirect(url_for('classroom.show_classroom', classroom_id=classroom.id))
+    return render_template('classroom/add_student_grade.html', title='Add Grade for Student',
+                           form=form)
+
+
+@bp.route('/edit_grade/<int:coursework_item_id>', methods=['GET', 'POST'])
+@login_required
+@role_required('Teacher')
+def edit_grade(coursework_item_id):
+    # form = AddStudentGradeForm()
+    # classroom = Classroom.query.filter_by(id=classroom_id).first_or_404()
+    # form.coursework_item.choices = [(course_item.id, course_item.name) for course_item in Coursework.query.filter_by(classroom_id=classroom_id).filter_by(creator_id=classroom.creator_id).all()]
+    # if form.validate_on_submit():
+    #     cousework_obj = CourseworkInstance(form.grade.data, form.date_occurred.data, datetime.now(), datetime.now(),
+    #                                        form.graded.data, form.comments.data, classroom_id, student_id, current_user.id,
+    #                                        form.coursework_item.data)
+    #     db.session.add(cousework_obj)
+    #     db.session.commit()
+    #     return redirect(url_for('classroom.show_classroom', classroom_id=classroom.id))
+    return render_template('classroom/add_student_grade.html', title='Add Grade for Student',
+                           form=form)
+
+
+@bp.route('/delete_grade/<int:coursework_item_id>', methods=['GET', 'POST'])
+@login_required
+@role_required('Teacher')
+def delete_grade(coursework_item_id):
+    # form = AddStudentGradeForm()
+    # classroom = Classroom.query.filter_by(id=classroom_id).first_or_404()
+    # form.coursework_item.choices = [(course_item.id, course_item.name) for course_item in Coursework.query.filter_by(classroom_id=classroom_id).filter_by(creator_id=classroom.creator_id).all()]
+    # if form.validate_on_submit():
+    #     cousework_obj = CourseworkInstance(form.grade.data, form.date_occurred.data, datetime.now(), datetime.now(),
+    #                                        form.graded.data, form.comments.data, classroom_id, student_id, current_user.id,
+    #                                        form.coursework_item.data)
+    #     db.session.add(cousework_obj)
+    #     db.session.commit()
+    #     return redirect(url_for('classroom.show_classroom', classroom_id=classroom.id))
+    return render_template('classroom/add_student_grade.html', title='Add Grade for Student',
+                           form=form)
 
 
 # @bp.route('/add_student/<int:classroom_id>/<int:student_id>/<int:coursework_id>', methods=['POST'])
